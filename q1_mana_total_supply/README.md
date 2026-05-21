@@ -2,14 +2,15 @@
 
 ## The answer
 
-Run against `polygon-rpc.com` (with API key):
+Run against `polygon-rpc.com` (Ankr, with API key) — canonical answer:
 
 ```
-raw uint256: <fill in from a keyed run against polygon-rpc.com>
-human:       <fill in>
+raw uint256: 4644407770269267540540803  (0x...03d77dd9875ceb07a37d83)
+human:       4,644,407.770269 MANA
 ```
 
-Run against the `polygon-bor-rpc.publicnode.com` fallback (uncredentialed):
+Run against the `polygon-bor-rpc.publicnode.com` fallback (uncredentialed) —
+identical at the same block:
 
 ```
 raw uint256: 4644407770269267540540803  (0x...03d77dd9875ceb07a37d83)
