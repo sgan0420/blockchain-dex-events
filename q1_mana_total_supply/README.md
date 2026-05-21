@@ -32,7 +32,7 @@ in — `dotenv` loads it automatically:
 
 ```
 cp .env.example .env
-# edit .env and set POLYGON_RPC_URL=https://polygon-rpc.com/?apikey=YOUR_KEY
+# edit .env and set POLYGON_RPC_URL=https://rpc.ankr.com/polygon/YOUR_KEY
 ruby q1_mana_total_supply/solve.rb
 ```
 
@@ -113,12 +113,15 @@ needed.
 
 ## Endpoint note
 
-The brief asks for `https://polygon-rpc.com/`. That endpoint now sits behind a
-free API key — uncredentialed requests come back with `tenant disabled,
-code -32051`. The script tries it first, then falls back to
-`polygon-bor-rpc.publicnode.com`, which speaks the same JSON-RPC dialect. The
-request body and the decoding are identical against either endpoint; the only
-difference is who is hosting the Bor node.
+The brief asks for `https://polygon-rpc.com/`. That endpoint is operated by
+Ankr and now sits behind a free API key — uncredentialed requests come back
+with `tenant disabled, code -32051`. After signup the keyed URL you get is
+path-based on `rpc.ankr.com` (e.g. `https://rpc.ankr.com/polygon/<KEY>`),
+not a `?apikey=` query string on `polygon-rpc.com`. The script tries the
+configured URL first, then falls back to `polygon-bor-rpc.publicnode.com`,
+which speaks the same JSON-RPC dialect. The request body and the decoding
+are identical against either endpoint; the only difference is who is hosting
+the Bor node.
 
 ## Why not just use a library?
 
