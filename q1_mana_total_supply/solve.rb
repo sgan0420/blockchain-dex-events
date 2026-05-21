@@ -6,6 +6,7 @@
 # request and response shape is visible end-to-end.
 
 require "bundler/setup"
+require "dotenv/load" # picks up POLYGON_RPC_URL from a local .env if present
 require "faraday"
 require "json"
 

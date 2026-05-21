@@ -3,3 +3,7 @@
 vendor/bundle/
 .ruby-lsp/
 *.log
+
+# Local secrets — reviewers `cp .env.example .env` and fill in their own keys.
+.env
+!.env.example

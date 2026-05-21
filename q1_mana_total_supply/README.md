@@ -24,15 +24,22 @@ Run it yourself:
 ```
 bundle install
 ruby q1_mana_total_supply/solve.rb
+```
 
-# To hit polygon-rpc.com with your own API key, pass the full URL via env:
-POLYGON_RPC_URL="https://polygon-rpc.com/?apikey=YOUR_KEY" \
-  ruby q1_mana_total_supply/solve.rb
+That hits the publicnode fallback out of the box. To run against
+`polygon-rpc.com` with your own API key, copy the env template and fill it
+in — `dotenv` loads it automatically:
+
+```
+cp .env.example .env
+# edit .env and set POLYGON_RPC_URL=https://polygon-rpc.com/?apikey=YOUR_KEY
+ruby q1_mana_total_supply/solve.rb
 ```
 
 `POLYGON_RPC_URL` overrides the first endpoint in the fallback list, so you
 can point the script at any Polygon JSON-RPC node (Alchemy, Infura, your own
-Bor node) without touching the code.
+Bor node) without touching the code. `.env` is gitignored; `.env.example` is
+the committed template.
 
 ## How `totalSupply()` becomes an RPC call
 
