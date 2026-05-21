@@ -6,7 +6,7 @@ Tx: <https://etherscan.io/tx/0x5e555836bacad83ac3989dc1ec9600800c7796d19d706f007
 ## The short answer
 
 `$3,184.35` is the **USDC output of the second hop** of a two-hop swap routed
-through the **1inch v3 aggregator**. The pool that produced that output is
+through the **1inch v4 aggregator**. The pool that produced that output is
 the same Uniswap V2 USDC/WETH pool from Q2
 (`0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc`). The exact raw number lives
 in the `data` field of that pool's `Swap` event — specifically the third
@@ -27,7 +27,7 @@ Three places, all reading the same on-chain data:
    decoded summary. Reads the tx's `to` (1inch Router) plus the chain of
    `Swap` events and renders something like:
 
-   > Swap `1.15481 ETH` For `$3,184.35` On `Uniswap V2` Via `1inch v3: Aggregation Router`
+   > Swap `1.15481 ETH` For `$3,184.35` On `Uniswap V2` Via `1inch v4: Aggregation Router`
 
    Screenshot: [`screenshots/etherscan-action.png`](./screenshots/etherscan-action.png)
 
@@ -52,19 +52,27 @@ lives**, and `solve.rb` in this folder pulls and decodes it via
 ## Why the trade is two hops and not direct
 
 The tx's `to` is `0x1111111254fb6c44bac0bed2854e76f90643097d` — the
-**1inch v3 aggregator**, not the Uniswap V2 Router. The user is selling
-some token X (`0x45c2…f83f`, 18 decimals), not ETH directly, so the
-aggregator split the route across two V2 pools:
+**1inch v4 aggregator**, not the Uniswap V2 Router. The user is selling
+**DOMI** (`0x45c2f8c9b4c0bdc76200448cc26c48ab6ffef83f`, 18 decimals; the
+pool is labelled `Uniswap V2: DOMI 2` on Etherscan), not ETH directly, so
+the aggregator split the route across two V2 pools:
 
 ```
-X (25,000 units)
-   │ pool 0x75d3…26df  (Uniswap V2 X/WETH)
+DOMI (25,000 units)
+   │ pool 0x75d3…26df  (Uniswap V2 DOMI/WETH)
    ▼
 WETH (1.15481)                  ← this is the "1.15481 ETH" in the prompt
    │ pool 0xb4e16d…c9dc (Uniswap V2 USDC/WETH, same as Q2)
    ▼
 USDC (3184.355095)              ← this is the "$3,184.35"
 ```
+
+> **Etherscan's dollar values are computed at *current* prices, not
+> historical.** Today the DOMI input row shows roughly `$16.81`, but at
+> the time of the trade (March 2022) those 25,000 DOMI were worth
+> ~$3,184. That's why the input and output USD figures look so
+> asymmetric in the modern UI — the on-chain conservation is in token
+> amounts, not dollars.
 
 Each pool emits its own `Swap` event (logs `[4]` and `[7]` in the receipt).
 The hop that produces the `$3,184.35` figure is the second one.
