@@ -2,7 +2,14 @@
 
 ## The answer
 
-At the time the script was run:
+Run against `polygon-rpc.com` (with API key):
+
+```
+raw uint256: <fill in from a keyed run against polygon-rpc.com>
+human:       <fill in>
+```
+
+Run against the `polygon-bor-rpc.publicnode.com` fallback (uncredentialed):
 
 ```
 raw uint256: 4644407770269267540540803  (0x...03d77dd9875ceb07a37d83)
@@ -17,7 +24,15 @@ Run it yourself:
 ```
 bundle install
 ruby q1_mana_total_supply/solve.rb
+
+# To hit polygon-rpc.com with your own API key, pass the full URL via env:
+POLYGON_RPC_URL="https://polygon-rpc.com/?apikey=YOUR_KEY" \
+  ruby q1_mana_total_supply/solve.rb
 ```
+
+`POLYGON_RPC_URL` overrides the first endpoint in the fallback list, so you
+can point the script at any Polygon JSON-RPC node (Alchemy, Infura, your own
+Bor node) without touching the code.
 
 ## How `totalSupply()` becomes an RPC call
 

@@ -14,7 +14,7 @@ require "json"
 # "tenant disabled, code -32051". We fall back to publicnode's open Bor RPC,
 # which speaks the same JSON-RPC dialect, so the call shape stays identical.
 RPC_URLS         = [
-  "https://polygon-rpc.com/",
+  ENV["POLYGON_RPC_URL"] || "https://polygon-rpc.com/",
   "https://polygon-bor-rpc.publicnode.com"
 ]
 MANA_TOKEN       = "0xa1c57f48f0deb89f569dfbe6e2b7f46d33606fd4"
