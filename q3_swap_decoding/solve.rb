@@ -75,8 +75,13 @@ puts "  amount1Out = 0x%064x  = %d  (WETH base units)" % [amount1_out, amount1_o
 puts
 puts "Scaled by each token's decimals:"
 puts "  WETH in:   %.6f WETH"  % (amount1_in.to_f  / 10**WETH_DECIMALS)
-puts "  USDC out:  %.6f USDC ($%.2f)" %
-       [amount0_out.to_f / 10**USDC_DECIMALS, amount0_out.to_f / 10**USDC_DECIMALS]
+# Etherscan truncates USDC at the cent, not rounds — so 3,184.355095 displays
+# as "$3,184.35", not "$3,184.36" (which is what %.2f would print via half-up
+# rounding). Do the truncation in integer arithmetic so the script's headline
+# number matches the block explorer's headline number.
+usdc_cents = amount0_out / 10**(USDC_DECIMALS - 2) # integer divide → truncates
+puts "  USDC out:  %.6f USDC ($%d.%02d)" %
+       [amount0_out.to_f / 10**USDC_DECIMALS, usdc_cents / 100, usdc_cents % 100]
 puts
 
 if pool_sync

@@ -51,7 +51,9 @@ for the full note.
 Hand-rolled `eth_call` against the MANA ERC-20 contract on Polygon, using
 the canonical `0x18160ddd` `totalSupply()` selector. The 32-byte hex
 response is parsed as a big-endian uint256 and scaled by MANA's 18
-decimals. **Answer: ~4,644,407.77 MANA** (raw `4644407770269267540540803`).
+decimals. **Answer: ~4.64 M MANA** (exact snapshot in the per-folder
+README; the supply drifts as MANA is bridged between Polygon and
+Ethereum).
 README walks through ABI selector derivation, the `eth_call` envelope,
 and uint256 decoding.
 

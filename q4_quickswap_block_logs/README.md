@@ -60,9 +60,10 @@ amount0Out: 8713302115784607036
 amount1Out: 0
 ```
 
-The fact that only one Swap fires here is consistent with the topic
-filter being narrow — `eth_getLogs` doesn't paginate or sample; if no
-other V2-fork pool emitted in this block, you get one log.
+Only one V2-style Swap log fired in this block. `eth_getLogs` returns
+every match in the range — it does not paginate or sample — so one
+result means one swap actually happened, not that the filter
+suppressed others.
 
 ## Identifying the pool
 
@@ -93,9 +94,19 @@ chunks, parse each as base-16, then scale by the token's decimals:
 | amount1Out   | WETH    | 18       | 0                               | 0              |
 
 So the swap was **0.004487 WETH in → 8.713302 WMATIC out** — i.e. someone
-buying MATIC with a small amount of ETH. The sender and receiver are the
-same address (`0xa5e0…78ff`), which is typical of an arb bot or a smart
-contract that holds its own funds.
+buying MATIC with a small amount of ETH.
+
+The `sender` and `to` on the event are both `0xa5e0…78ff`, which is the
+**QuickSwap V2 Router** itself (calling its own `factory()` returns the
+QuickSwap V2 Factory `0x5757…3Ab32`, and it exposes `WETH() = WMATIC` —
+both are giveaway signatures of a `UniswapV2Router02` clone). That's the
+Q2 architecture in action: an EOA called the Router, the Router pulled
+the user's WETH into the pool and invoked `pair.swap(amount0Out,
+amount1Out, to=Router, …)`, and the Router then forwarded the WMATIC
+out to the user. So this is a standard retail swap fronted by the
+Router, *not* a direct-to-pool call. The retail-via-Router pattern is
+exactly what makes the Q2 pool's Transactions tab look sparse for
+Uniswap V2 on mainnet.
 
 ## Why this RPC pattern matters
 

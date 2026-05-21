@@ -68,11 +68,13 @@ USDC (3184.355095)              ← this is the "$3,184.35"
 ```
 
 > **Etherscan's dollar values are computed at *current* prices, not
-> historical.** Today the DOMI input row shows roughly `$16.81`, but at
-> the time of the trade (March 2022) those 25,000 DOMI were worth
-> ~$3,184. That's why the input and output USD figures look so
-> asymmetric in the modern UI — the on-chain conservation is in token
-> amounts, not dollars.
+> historical.** The DOMI input row shows a near-zero USD value today
+> (cents to a few dollars, drifting with DOMI's current price), while
+> the USDC output row still shows ~$3,184 because USDC's peg hasn't
+> moved. At the time of the trade (March 2022) those 25,000 DOMI were
+> worth ~$3,184 — the same as what came out. So the asymmetric USD
+> values you see in the modern UI are a price-vintage artefact; the
+> on-chain conservation is in token amounts, not dollars.
 
 Each pool emits its own `Swap` event (logs `[4]` and `[7]` in the receipt).
 The hop that produces the `$3,184.35` figure is the second one.
@@ -148,10 +150,11 @@ For this swap (WETH in → USDC out):
 
 ```
 amount_in_with_fee = 1,154,811,757,668,969,125 * 997
-                   = 1,151,347,322,396,002,217,625
-numerator          = 1,151,347,322,396,002,217,625 * 105,950,790,410,919   (USDC base units)
-denominator        =                          38,306,812,178,xxxx... * 1000
-                   + 1,151,347,322,396,002,217,625
+                   = 1,151,347,322,395,962,217,625
+numerator          = 1,151,347,322,395,962,217,625 * 105,950,790,410,919   (USDC base units)
+denominator        = 38,306,812,178,418,000,685,322 * 1000
+                   + 1,151,347,322,395,962,217,625
+                   = 38,307,963,525,740,396,647,539,625
 amount_out         = numerator / denominator  (integer division, like Solidity)
                    = 3,184,355,095
 ```

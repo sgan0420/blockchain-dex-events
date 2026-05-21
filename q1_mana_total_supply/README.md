@@ -2,23 +2,19 @@
 
 ## The answer
 
-Run against `polygon-rpc.com` (Ankr, with API key) — canonical answer:
+Snapshot at **2026-05-22**, taken simultaneously against both
+`polygon-rpc.com` (Ankr, keyed) and `polygon-bor-rpc.publicnode.com`
+(uncredentialed fallback) — both endpoints returned the exact same word,
+which is the cross-endpoint sanity check:
 
 ```
 raw uint256: 4644407770269267540540803  (0x...03d77dd9875ceb07a37d83)
 human:       4,644,407.770269 MANA
 ```
 
-Run against the `polygon-bor-rpc.publicnode.com` fallback (uncredentialed) —
-identical at the same block:
-
-```
-raw uint256: 4644407770269267540540803  (0x...03d77dd9875ceb07a37d83)
-human:       4,644,407.770269 MANA
-```
-
-(The number changes over time as MANA is bridged across networks, so a later
-run will report a slightly different supply. Decoding is identical.)
+The supply moves as MANA is bridged between Polygon and Ethereum, so a
+later run will show a slightly different number — the decoding path is
+unchanged.
 
 Run it yourself:
 
